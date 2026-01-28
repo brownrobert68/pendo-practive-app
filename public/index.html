@@ -10,8 +10,7 @@
     />
     <title>Pendo Practice App</title>
     
-    <!-- Pendo Script - Replace with your actual Pendo snippet -->
-    <!-- 
+    <!-- Pendo Script - Replace YOUR-PENDO-API-KEY with your actual API key -->
     <script>
       (function(apiKey){
         (function(p,e,n,d,o){var v,w,x,y,z;o=p[d]=p[d]||{};o._q=o._q||[];
@@ -20,18 +19,18 @@
             y=e.createElement(n);y.async=!0;y.src='https://cdn.pendo.io/agent/static/'+apiKey+'/pendo.js';
             z=e.getElementsByTagName(n)[0];z.parentNode.insertBefore(y,z);})(window,document,'script','pendo');
         
-        // Initialize Pendo with visitor and account information
+        // Initial Pendo setup for anonymous/logged-out users
+        // When user logs in, the app will call pendo.identify() with their info
         pendo.initialize({
             visitor: {
-                id: 'VISITOR-UNIQUE-ID'   // Replace with unique visitor ID
+                id: 'anonymous'  // Will be updated on login
             },
             account: {
-                id: 'ACCOUNT-UNIQUE-ID'   // Replace with unique account ID
+                id: 'pendo-practice-account'  // Your practice account
             }
         });
-    })('YOUR-PENDO-API-KEY-HERE');
+    })('9416a162-5115-49d1-7f26-5c62a4d7408d');  // <-- REPLACE THIS with your actual Pendo API key
     </script>
-    -->
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

@@ -4,10 +4,24 @@ A simple React application designed to help you practice implementing and using 
 
 ## Features
 
-- **Multiple Pages**: Home, Dashboard, and Contact pages for tracking navigation
+- **Authentication System**: Login with role-based access control
+- **Multiple User Roles**: Admin, Manager, User, and Viewer with different permissions
+- **Multiple Pages**: Home, Dashboard, Admin Settings, and Contact pages
 - **Interactive Elements**: Buttons, forms, tabs, and counters with unique IDs for easy Pendo tracking
+- **Protected Routes**: Role-based page access
 - **Navigation**: React Router for page transitions
 - **Responsive Design**: Works on desktop and mobile
+
+## Demo Accounts
+
+The app includes 4 pre-configured user accounts with different roles:
+
+| Username | Password | Role | Access Level |
+|----------|----------|------|--------------|
+| admin | admin123 | Admin | Full access to all features including Admin Settings |
+| manager | manager123 | Manager | Access to Dashboard analytics and reports |
+| user | user123 | User | Standard access to basic features |
+| viewer | viewer123 | Viewer | Read-only access, limited features |
 
 ## Quick Start
 
@@ -120,23 +134,31 @@ Open `public/index.html` and replace the commented Pendo script section with you
     
     pendo.initialize({
         visitor: {
-            id: 'test-visitor-' + Date.now()
+            id: 'anonymous'
         },
         account: {
-            id: 'test-account'
+            id: 'practice-account'
         }
     });
 })('YOUR-API-KEY-HERE');
 </script>
 ```
 
+**Note:** The app automatically updates Pendo with user information when someone logs in. The `login` function in App.js calls `pendo.identify()` with the user's role and name, allowing you to segment users by role in Pendo.
+
 ### Step 3: Practice Tracking Events
 
 The app includes many elements with unique IDs that you can track in Pendo:
 
+**Login:**
+- `#username`, `#password`
+- `#login-btn`
+- `#logout-btn`
+
 **Navigation:**
 - `#nav-home`
 - `#nav-dashboard`
+- `#nav-admin` (Admin only)
 - `#nav-contact`
 
 **Home Page Buttons:**
@@ -147,10 +169,18 @@ The app includes many elements with unique IDs that you can track in Pendo:
 
 **Dashboard Tabs:**
 - `#tab-overview`
-- `#tab-analytics`
-- `#tab-reports`
-- `#export-data`
+- `#tab-analytics` (Manager/Admin only)
+- `#tab-reports` (Manager/Admin only)
+- `#export-data` (Admin only)
 - `#generate-report`
+
+**Admin Settings (Admin only):**
+- `#site-name`
+- `#maintenance-mode`
+- `#allow-registration`
+- `#max-users`
+- `#save-settings`
+- `#edit-{username}`, `#delete-{username}` buttons
 
 **Contact Form:**
 - `#name`, `#email`, `#message`
@@ -158,13 +188,18 @@ The app includes many elements with unique IDs that you can track in Pendo:
 
 ## What You Can Practice with Pendo
 
-1. **Page Analytics**: Track visits to Home, Dashboard, and Contact pages
-2. **Feature Usage**: See which buttons and features users click most
-3. **User Flows**: Understand how users navigate through your app
-4. **Form Analytics**: Track form completions on the Contact page
-5. **Feature Adoption**: Monitor usage of different dashboard tabs
-6. **Guides**: Create in-app guides to walk users through features
-7. **Segmentation**: Create visitor segments based on behavior
+1. **User Authentication Tracking**: Track login events and user sessions
+2. **Role-Based Analytics**: Segment users by role (Admin, Manager, User, Viewer)
+3. **Page Analytics**: Track visits to different pages based on user permissions
+4. **Feature Usage**: See which buttons and features different roles use most
+5. **User Flows**: Understand how different user types navigate through your app
+6. **Form Analytics**: Track form completions on the Contact page
+7. **Feature Adoption**: Monitor usage of dashboard tabs by role
+8. **Access Denied Tracking**: Track when users try to access restricted features
+9. **Guides**: Create role-specific in-app guides
+10. **Segmentation**: Create visitor segments based on role and behavior
+11. **Permission-Based Features**: Track usage of role-restricted features
+12. **Admin Activity**: Monitor admin-specific actions and settings changes
 
 ## Project Structure
 
@@ -183,12 +218,32 @@ pendo-practice-app/
 
 ## Tips for Pendo Practice
 
-1. **Start Simple**: Begin by just tracking page views
+1. **Start Simple**: Begin by tracking login events and page views
 2. **Add Feature Tagging**: Use Pendo's visual designer to tag features
-3. **Create Segments**: Group visitors by behavior (e.g., "Dashboard users")
-4. **Build Guides**: Create walkthroughs for new features
+3. **Create Role-Based Segments**: Group visitors by role (Admin, Manager, User, Viewer)
+4. **Build Role-Specific Guides**: Create different walkthroughs for different roles
 5. **Track Events**: Use `pendo.track()` to send custom events
-6. **Analyze Funnels**: Track user progression through the contact form
+6. **Analyze Role-Based Funnels**: Track user progression by role
+7. **Monitor Feature Access**: See which users attempt to access restricted features
+8. **Test Permission Flows**: Log in as different roles to see how guides appear differently
+
+### Practice Scenarios
+
+**Scenario 1: Role-Based Feature Adoption**
+- Log in as different roles
+- Notice which features are available/restricted
+- Create segments in Pendo for each role
+- Compare feature usage across roles
+
+**Scenario 2: Onboarding Guides**
+- Create a guide for new "User" role members
+- Create an advanced guide for "Admin" users
+- Use role metadata to target guides appropriately
+
+**Scenario 3: Access Monitoring**
+- Try to access Admin page as a "User"
+- Track "Access Denied" events in Pendo
+- Create alerts for repeated access attempts
 
 ## Need Help?
 

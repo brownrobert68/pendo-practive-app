@@ -9,6 +9,24 @@
 
 ## Part 1: Setting Up the Application Locally
 
+### Understanding the App
+
+This app now includes:
+- **Authentication System** with login/logout
+- **4 User Roles**: Admin, Manager, User, and Viewer
+- **Role-Based Access Control**: Different features available to different roles
+- **Protected Routes**: Some pages require specific roles
+- **Automatic Pendo Integration**: User info sent to Pendo on login
+
+### Demo Accounts
+
+| Username | Password | Role | What They Can Do |
+|----------|----------|------|------------------|
+| admin | admin123 | Admin | Access everything including Admin Settings |
+| manager | manager123 | Manager | Dashboard analytics and reports |
+| user | user123 | User | Basic features and contact form |
+| viewer | viewer123 | Viewer | Read-only, limited access |
+
 ### Step 1: Prepare Your Project
 
 1. Copy all the project files to a directory on your computer
@@ -34,18 +52,19 @@
 1. Open `public/index.html` in a text editor
 2. Find the commented section that says `<!-- Pendo Script -->`
 3. Replace it with your Pendo installation script
-4. Update the visitor ID to be unique (you can use the current setup or modify it):
+4. The initial visitor ID will be 'anonymous', but when users log in, the app automatically calls:
 
 ```javascript
-pendo.initialize({
+pendo.identify({
     visitor: {
-        id: 'visitor-' + Math.random().toString(36).substring(7)
-    },
-    account: {
-        id: 'practice-account'
+        id: user.username,      // e.g., 'admin', 'manager'
+        role: user.role,        // e.g., 'admin', 'manager', 'user', 'viewer'
+        name: user.name         // e.g., 'Admin User'
     }
 });
 ```
+
+This means you can segment users by role in Pendo and create role-specific guides!
 
 5. Save the file
 
@@ -213,52 +232,68 @@ Choose ONE of the following options:
 
 ### Beginner Activities
 
-1. **Track Page Views**
-   - Navigate between pages
+1. **Track Login Events**
+   - Log in as different users
+   - View in Pendo: Behavior → Events → Look for login activity
+
+2. **Track Page Views by Role**
+   - Navigate between pages as different roles
    - View in Pendo: Behavior → Pages
+   - Notice how Admin sees Admin page, but others don't
 
-2. **Tag Features**
+3. **Tag Features**
    - In Pendo, use visual designer to tag buttons
-   - Tag: increment button, dashboard tabs, form submit
+   - Tag: login button, increment button, dashboard tabs
 
-3. **Create User Segments**
-   - Create segment: "Dashboard Users" (visited /dashboard)
-   - Create segment: "Active Users" (>5 page views)
+4. **Create Role-Based Segments**
+   - Create segment: "Admin Users" (role = admin)
+   - Create segment: "Managers" (role = manager)
+   - Create segment: "Standard Users" (role = user or viewer)
 
 ### Intermediate Activities
 
-4. **Build a Guide**
-   - Create a tooltip guide for the increment button
-   - Create a multi-step walkthrough for the contact form
+5. **Build Role-Specific Guides**
+   - Create a guide for Admin users showing the Admin Settings page
+   - Create a guide for new Users showing basic features
+   - Use role metadata to target: visitor.role == 'admin'
 
-5. **Track Custom Events**
-   - Add to your code:
-   ```javascript
-   // In App.js, add to button click:
-   if (window.pendo) {
-     window.pendo.track('IncrementClicked', {
-       currentValue: count
-     });
-   }
-   ```
+6. **Track Feature Access by Role**
+   - Notice locked features (🔒) on Dashboard for User/Viewer roles
+   - Track when users click disabled buttons
+   - Create a report on feature access attempts
 
-6. **Analyze Funnels**
-   - Create funnel: Home → Dashboard → Contact
-   - See where users drop off
+7. **Analyze User Flows by Role**
+   - Compare navigation patterns of Admins vs Users
+   - Create funnels: Login → Dashboard → Specific Actions
+   - See where different roles drop off
+
+8. **Track Custom Events**
+   - The app already sends user info on login
+   - Add custom tracking for role-specific actions
+   - Example: Track when admins change settings
 
 ### Advanced Activities
 
-7. **Resource Center**
-   - Build a resource center with help articles
-   - Test on your deployed app
+9. **Resource Center with Role-Based Content**
+   - Build a resource center with different content for each role
+   - Admin section: How to manage users
+   - Manager section: How to read analytics
+   - User section: Basic features guide
 
-8. **A/B Testing**
-   - Create two versions of a guide
-   - Split test them
+10. **A/B Testing by Role**
+    - Create two versions of a guide
+    - Test them with different roles
+    - Compare engagement rates
 
-9. **NPS Surveys**
-   - Create an NPS poll
-   - Target specific user segments
+11. **Permission Analytics**
+    - Track which features are most clicked when locked
+    - Identify if users need more permissions
+    - Create reports on "access denied" scenarios
+
+12. **Segmented NPS Surveys**
+    - Create different NPS surveys for each role
+    - Ask role-specific questions
+    - Compare satisfaction by user type
 
 ---
 

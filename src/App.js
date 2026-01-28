@@ -259,7 +259,6 @@ function Dashboard() {
 
 // Admin Settings Page Component
 function AdminSettings() {
-  const { currentUser } = useContext(AuthContext);
   const [settings, setSettings] = useState({
     siteName: 'Pendo Practice App',
     maintenanceMode: false,
@@ -388,6 +387,7 @@ function Contact() {
   return (
     <div className="page">
       <h1>Contact Us</h1>
+      <p className="role-info">Submitting as: <strong>{currentUser.name}</strong> ({currentUser.role})</p>
       
       {submitted ? (
         <div className="success-message">

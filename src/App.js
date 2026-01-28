@@ -444,13 +444,23 @@ function App() {
 
   const login = (user) => {
     setCurrentUser(user);
-    // In a real app, you'd also update Pendo here with user info
+    // Update Pendo with detailed user information
     if (window.pendo) {
       window.pendo.identify({
         visitor: {
-          id: user.username,
-          role: user.role,
-          name: user.name
+          id: user.username,              // Required: unique visitor ID
+          email: user.username + '@pendo-practice.com',  // Recommended for Pendo Feedback
+          full_name: user.name,           // Recommended for Pendo Feedback
+          role: user.role,                // Custom field: user's role
+          loginTime: new Date().toISOString()  // Custom field: when they logged in
+        },
+        account: {
+          id: 'pendo-practice-account',   // Required: account ID
+          name: 'Pendo Practice Organization',  // Optional: account name
+          is_paying: true,                // Recommended for Pendo Feedback
+          planLevel: user.role === 'admin' ? 'enterprise' : 
+                     user.role === 'manager' ? 'professional' : 'basic',  // Custom field
+          creationDate: '2024-01-01'      // Optional: account creation date
         }
       });
     }
